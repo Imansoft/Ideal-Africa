@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDEAL Africa Foundation — Equipping Young Africans to Lead Globally</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@latest/font/bootstrap-icons.css" />
+  <style>
+    :root {
+      --navy:       #0f2d52;
+      --navy-mid:   #16437d;
+      --gold:       #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-pale:  #f5e9c8;
+      --cream:      #faf8f3;
+      --warm-white: #fffdf7;
+      --charcoal:   #2a2a2a;
+      --mid-gray:   #6b7280;
+      --light-gray: #f1f0eb;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --shadow-card: 0 4px 24px rgba(15,45,82,0.08), 0 1px 4px rgba(15,45,82,0.04);
+      --shadow-hover: 0 16px 48px rgba(15,45,82,0.18), 0 4px 12px rgba(15,45,82,0.08);
+      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--charcoal); background: var(--warm-white); line-height: 1.6; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* LAYOUT */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
+
+    /* TYPOGRAPHY UTILITIES */
+    .section-label { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 2px; background: var(--gold); }
+    .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 800; line-height: 1.15; color: var(--navy); }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-subtitle { font-size: clamp(1rem, 1.5vw, 1.15rem); color: var(--mid-gray); line-height: 1.75; max-width: 580px; }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; border-radius: 50px; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition); border: 2px solid transparent; }
+    .btn-primary { background: var(--gold); color: var(--navy); }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.3); }
+    .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.6); }
+    .btn-outline:hover { background: #fff; color: var(--navy); border-color: #fff; }
+    .btn-navy { background: var(--navy); color: #fff; }
+    .btn-navy:hover { background: var(--navy-mid); transform: translateY(-2px); }
+    .btn-ghost-gold { background: transparent; color: var(--gold); border-color: var(--gold); }
+    .btn-ghost-gold:hover { background: var(--gold); color: var(--navy); }
+
+    /* REVEAL ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* =============== NAV =============== */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.25rem 0; transition: var(--transition); }
+    .nav.scrolled { background: rgba(255,253,247,0.97); backdrop-filter: blur(16px); padding: 0.75rem 0; box-shadow: 0 1px 0 rgba(15,45,82,0.08), 0 4px 24px rgba(15,45,82,0.06); }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav__logo img { height: 46px; width: auto; }
+    .nav__links { display: flex; align-items: center; gap: 2.25rem; list-style: none; }
+    .nav__links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.9); transition: color 0.2s; position: relative; }
+    .nav__links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s; }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after { transform: scaleX(1); }
+    .nav.scrolled .nav__links a { color: var(--charcoal); }
+    .nav.scrolled .nav__links a:hover { color: var(--navy); }
+    .nav__cta { background: var(--gold) !important; color: var(--navy) !important; padding: 0.55rem 1.35rem; border-radius: 50px; font-weight: 600 !important; }
+    .nav__cta::after { display: none !important; }
+    .nav__cta:hover { background: var(--gold-light) !important; }
+    .nav__toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav__toggle span { display: block; width: 24px; height: 2px; background: #fff; transition: var(--transition); }
+    .nav.scrolled .nav__toggle span { background: var(--navy); }
+
+    /* Mobile nav overlay */
+    .nav__mobile { display: none; position: fixed; inset: 0; background: var(--navy); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 1.75rem; }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #fff; transition: color 0.2s; }
+    .nav__mobile a:hover { color: var(--gold); }
+    .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.75rem; color: #fff; cursor: pointer; background: none; border: none; line-height: 1; }
+
+    /* =============== HERO =============== */
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; }
+    .hero__bg { position: absolute; inset: 0; background: url('img/Ideal africa Hero.jpg') center/cover no-repeat; }
+    .hero__overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,20,42,0.3) 0%, rgba(8,20,42,0.55) 45%, rgba(8,20,42,0.88) 100%); }
+    .hero__content { position: relative; z-index: 2; width: 100%; padding: 9rem 0 5.5rem; }
+    .hero__eyebrow { display: inline-flex; align-items: center; gap: 0.7rem; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.5rem; }
+    .hero__eyebrow-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .hero__title { font-family: var(--font-display); font-size: clamp(2.75rem, 6.5vw, 5.5rem); font-weight: 900; line-height: 1.05; color: #fff; max-width: 860px; margin-bottom: 1.5rem; }
+    .hero__title em { font-style: italic; color: var(--gold-light); }
+    .hero__subtitle { font-size: clamp(1rem, 1.8vw, 1.2rem); color: rgba(255,255,255,0.78); max-width: 560px; line-height: 1.75; margin-bottom: 2.5rem; font-weight: 300; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3.5rem; }
+    .hero__stats { display: flex; flex-wrap: wrap; gap: 2.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.15); }
+    .stat-num { font-family: var(--font-display); font-size: 2.25rem; font-weight: 800; color: var(--gold-light); line-height: 1; }
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; letter-spacing: 0.01em; }
+    .hero__scroll-hint { position: absolute; bottom: 2.5rem; right: 3rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.45); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; writing-mode: vertical-rl; z-index: 2; }
+    .hero__scroll-hint::after { content: ''; width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); }
+
+    /* =============== MISSION STRIP =============== */
+    .mission-strip { background: var(--navy); padding: 2rem 0; }
+    .mission-strip__inner { display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; }
+    .mission-strip__text { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2vw, 1.5rem); color: #fff; line-height: 1.5; flex: 1; }
+    .mission-strip__text em { color: var(--gold-light); font-style: italic; }
+    .mission-strip__logo { height: 52px; width: auto; opacity: 0.75; flex-shrink: 0; }
+
+    /* =============== WHY NOW =============== */
+    .why-now { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--warm-white); }
+    .why-now__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .why-now__body { font-size: 1.05rem; line-height: 1.85; color: #444; margin-top: 1.5rem; }
+    .why-now__body p + p { margin-top: 1rem; }
+    .why-now__body strong { color: var(--navy); font-weight: 600; }
+    .why-now__cards { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 0.5rem; }
+    .fact-card { border-left: 4px solid var(--gold); border-radius: 0 12px 12px 0; padding: 1.5rem 1.75rem; background: var(--cream); }
+    .fact-card--dark { background: var(--navy); }
+    .fact-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: var(--navy); line-height: 1; margin-bottom: 0.35rem; }
+    .fact-card--dark .fact-num { color: var(--gold-light); }
+    .fact-text { font-size: 0.9rem; color: var(--mid-gray); line-height: 1.55; }
+    .fact-card--dark .fact-text { color: rgba(255,255,255,0.65); }
+
+    /* =============== PROGRAMS =============== */
+    .programs { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--light-gray); position: relative; overflow: hidden; }
+    .programs::before { content: 'IDEAL'; position: absolute; bottom: -3rem; right: -1rem; font-family: var(--font-display); font-size: 20rem; font-weight: 900; color: rgba(15,45,82,0.03); pointer-events: none; line-height: 1; }
+    .programs__header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; margin-bottom: 3.5rem; }
+    .programs__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .prog-card { background: #fff; border-radius: 20px; padding: 2.5rem 2rem; box-shadow: var(--shadow-card); transition: var(--transition); position: relative; overflow: hidden; }
+    .prog-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+    .prog-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+    .prog-card:hover::after { transform: scaleX(1); }
+    .prog-card__icon { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(135deg, var(--navy), var(--navy-mid)); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.4rem; color: #fff; }
+    .prog-card__title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+    .prog-card__text { font-size: 0.95rem; color: var(--mid-gray); line-height: 1.72; }
+
+    /* =============== AUDIENCE =============== */
+    .audience { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--navy); position: relative; overflow: hidden; }
+    .audience::before { content: ''; position: absolute; top: -40%; right: -20%; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%); pointer-events: none; }
+    .audience__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .audience .section-label { color: var(--gold-light); }
+    .audience .section-label::before { background: var(--gold-light); }
+    .audience__title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 800; line-height: 1.15; color: #fff; margin-bottom: 1rem; }
+    .audience__title em { color: var(--gold-light); font-style: italic; }
+    .audience__sub { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.75; margin-bottom: 2rem; }
+    .audience__tags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .audience__tag { padding: 0.55rem 1.3rem; border: 1.5px solid rgba(201,168,76,0.4); border-radius: 50px; font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.82); transition: var(--transition); cursor: default; }
+    .audience__tag:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .audience__values { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .val-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.75rem 1.5rem; transition: var(--transition); }
+    .val-card:hover { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); }
+    .val-card__icon { font-size: 1.4rem; color: var(--gold-light); margin-bottom: 0.65rem; }
+    .val-card__title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+    .val-card__text { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* =============== MANIFESTO =============== */
+    .manifesto { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--gold-pale); position: relative; overflow: hidden; }
+    .manifesto::before { content: '"'; position: absolute; top: -4rem; left: -1rem; font-family: var(--font-display); font-size: 30rem; font-weight: 900; color: rgba(201,168,76,0.12); line-height: 1; pointer-events: none; }
+    .manifesto__inner { max-width: 820px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+    .manifesto__quote { font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 800; color: var(--navy); line-height: 1.3; margin-bottom: 1.5rem; }
+    .manifesto__quote em { font-style: italic; color: var(--gold); }
+    .manifesto__body { font-size: 1.05rem; color: #555; line-height: 1.8; max-width: 640px; margin: 0 auto 2.25rem; }
+    .manifesto__pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.25rem; }
+    .manifesto__pill { background: var(--navy); color: #fff; padding: 0.55rem 1.3rem; border-radius: 50px; font-size: 0.83rem; font-weight: 600; }
+
+    /* =============== WEBINARS =============== */
+    .webinars { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--warm-white); }
+    .webinars__header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
+    .webinars__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .wbr-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-card); transition: var(--transition); border: 1px solid rgba(15,45,82,0.05); }
+    .wbr-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+    .wbr-card__body { padding: 1.75rem; }
+    .wbr-card__tag { display: inline-block; padding: 0.25rem 0.75rem; background: var(--gold-pale); color: var(--navy); border-radius: 50px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.9rem; }
+    .wbr-card__title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; line-height: 1.3; }
+    .wbr-card__meta { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.83rem; color: var(--mid-gray); margin-bottom: 0; }
+    .wbr-card__meta span { display: flex; align-items: center; gap: 0.4rem; }
+    .wbr-card__footer { padding: 1rem 1.75rem; border-top: 1px solid rgba(15,45,82,0.06); display: flex; justify-content: space-between; align-items: center; }
+    .wbr-status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.77rem; font-weight: 600; color: #059669; }
+    .wbr-status::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: #059669; }
+    .wbr-link { font-size: 0.83rem; font-weight: 600; color: var(--navy); display: inline-flex; align-items: center; gap: 0.3rem; transition: gap 0.2s, color 0.2s; }
+    .wbr-link:hover { gap: 0.6rem; color: var(--gold); }
+
+    /* =============== COMMUNITY =============== */
+    .community { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--light-gray); }
+    .community__inner { display: grid; grid-template-columns: 1fr 1.15fr; gap: 5rem; align-items: center; }
+    .community__benefits { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+    .benefit { display: flex; gap: 1rem; align-items: flex-start; }
+    .benefit__icon { width: 40px; height: 40px; border-radius: 8px; background: var(--navy); display: flex; align-items: center; justify-content: center; color: var(--gold-light); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .benefit__title { font-weight: 600; color: var(--navy); margin-bottom: 0.2rem; font-size: 0.95rem; }
+    .benefit__text { font-size: 0.87rem; color: var(--mid-gray); line-height: 1.55; }
+    .cta-block { background: var(--navy); border-radius: 28px; padding: 3rem 2.5rem; }
+    .cta-block h3 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; line-height: 1.25; }
+    .cta-block h3 em { font-style: italic; color: var(--gold-light); }
+    .cta-block p { color: rgba(255,255,255,0.65); font-size: 0.95rem; line-height: 1.72; margin-bottom: 1.75rem; }
+    .cta-block__note { margin-top: 1.25rem; font-size: 0.78rem; color: rgba(255,255,255,0.38); font-style: italic; }
+
+    /* =============== GET INVOLVED =============== */
+    .involved { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--warm-white); }
+    .involved__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .inv-card { background: #fff; border-radius: 20px; padding: 2.25rem 2rem; display: flex; gap: 1.5rem; align-items: flex-start; box-shadow: var(--shadow-card); transition: var(--transition); border: 1px solid transparent; }
+    .inv-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--gold-pale); }
+    .inv-card__icon { width: 52px; height: 52px; border-radius: 12px; background: var(--gold-pale); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: var(--navy); flex-shrink: 0; }
+    .inv-card__title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .inv-card__text { font-size: 0.9rem; color: var(--mid-gray); line-height: 1.6; margin-bottom: 1rem; }
+    .inv-card__link { font-size: 0.85rem; font-weight: 600; color: var(--gold); display: inline-flex; align-items: center; gap: 0.3rem; transition: gap 0.2s, color 0.2s; }
+    .inv-card__link:hover { gap: 0.6rem; color: var(--navy); }
+
+    /* =============== FINAL CTA =============== */
+    .final-cta { padding: clamp(5rem, 10vw, 8rem) 0; background: var(--navy); position: relative; overflow: hidden; }
+    .final-cta::before { content: ''; position: absolute; top: -50%; left: -20%; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 65%); pointer-events: none; }
+    .final-cta__inner { text-align: center; max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+    .final-cta .section-label { color: var(--gold-light); justify-content: center; }
+    .final-cta .section-label::before { background: var(--gold-light); }
+    .final-cta__title { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 1.25rem; }
+    .final-cta__title em { color: var(--gold-light); font-style: italic; }
+    .final-cta__text { font-size: 1.05rem; color: rgba(255,255,255,0.62); line-height: 1.78; margin-bottom: 2.5rem; }
+    .final-cta__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+
+    /* =============== FOOTER =============== */
+    .footer { background: #07182e; padding: 4rem 0 2rem; }
+    .footer__top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .footer__logo { height: 42px; margin-bottom: 1rem; }
+    .footer__brand p { font-size: 0.88rem; color: rgba(255,255,255,0.48); line-height: 1.7; margin-bottom: 1rem; }
+    .footer__head { font-size: 0.73rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .footer__links { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: #fff; }
+    .footer__social { display: flex; gap: 0.65rem; margin-top: 0.75rem; }
+    .footer__soc { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.88rem; transition: var(--transition); }
+    .footer__soc:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .footer__nl { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .footer__nl-input { flex: 1; padding: 0.65rem 1rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.83rem; font-family: var(--font-body); outline: none; }
+    .footer__nl-input::placeholder { color: rgba(255,255,255,0.3); }
+    .footer__nl-input:focus { border-color: var(--gold); }
+    .footer__nl-btn { padding: 0.65rem 1rem; border-radius: 50px; background: var(--gold); color: var(--navy); font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; transition: var(--transition); }
+    .footer__nl-btn:hover { background: var(--gold-light); }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 2rem; font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+
+    /* =============== RESPONSIVE =============== */
+    @media (max-width: 1024px) {
+      .programs__grid { grid-template-columns: 1fr 1fr; }
+      .webinars__grid { grid-template-columns: 1fr 1fr; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__toggle { display: flex; }
+      .why-now__grid, .audience__inner, .community__inner { grid-template-columns: 1fr; gap: 3rem; }
+      .audience__values { grid-template-columns: 1fr 1fr; }
+      .programs__grid, .webinars__grid, .involved__grid { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr; gap: 2rem; }
+      .hero__scroll-hint, .mission-strip__logo { display: none; }
+    }
+    @media (max-width: 480px) {
+      .audience__values { grid-template-columns: 1fr; }
+      .hero__stats { gap: 1.5rem; }
+      .final-cta__actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="#home" class="nav__logo"><img src="img/IDEAL_Logo-removebg-preview.png" alt="IDEAL Africa" /></a>
+      <ul class="nav__links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#webinars">Webinars</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#get-involved">Get Involved</a></li>
+        <li><a href="#community" class="nav__cta">Join Us</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav__mobile" id="mobileNav">
+  <button class="close-btn" id="mobileClose">✕</button>
+  <a href="#about" class="ml">About</a>
+  <a href="#programs" class="ml">Programs</a>
+  <a href="#webinars" class="ml">Webinars</a>
+  <a href="#community" class="ml">Community</a>
+  <a href="#get-involved" class="ml">Get Involved</a>
+  <a href="#community" class="btn btn-primary ml">Join the Community</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero__bg"></div>
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <div class="container">
+      <div class="hero__eyebrow"><span class="hero__eyebrow-dot"></span>IDEAL Africa Foundation</div>
+      <h1 class="hero__title">
+        Where Ambitious<br>Young Africans Come<br>to <em>Think, Learn,</em><br>and Build.
+      </h1>
+      <p class="hero__subtitle">The future of work is evolving faster than ever. IDEAL exists to help young Africans develop the skills, mindset, and networks required to compete and lead globally.</p>
+      <div class="hero__actions">
+        <a href="#community" class="btn btn-primary">Join the Community &nbsp;→</a>
+        <a href="#webinars" class="btn btn-outline">Attend a Webinar</a>
+      </div>
+      <div class="hero__stats">
+        <div><div class="stat-num">2025</div><div class="stat-label">Year Founded</div></div>
+        <div><div class="stat-num">Africa</div><div class="stat-label">Where We Build</div></div>
+        <div><div class="stat-num">100K</div><div class="stat-label">Youth to Impact (10yr)</div></div>
+        <div><div class="stat-num">16–25</div><div class="stat-label">Target Age Group</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero__scroll-hint">Scroll</div>
+</section>
+
+<!-- MISSION STRIP -->
+<div class="mission-strip">
+  <div class="container">
+    <div class="mission-strip__inner">
+      <p class="mission-strip__text">IDEAL Africa is a learning and mentorship community for young Africans who want to become <em>exceptional operators, builders, and professionals</em> — anywhere in the world.</p>
+      <img src="img/IDEAL_Logo-removebg-preview.png" alt="IDEAL Africa" class="mission-strip__logo" />
+    </div>
+  </div>
+</div>
+
+<!-- WHY NOW / ABOUT -->
+<section class="why-now" id="about">
+  <div class="container">
+    <div class="why-now__grid">
+      <div class="reveal">
+        <span class="section-label">Why This Matters</span>
+        <h2 class="section-title">Africa is at an <em>inflection point.</em></h2>
+        <div class="why-now__body">
+          <p>By 2030, Africa's workforce will grow by more than <strong>375 million people</strong> — one of the largest talent pools in the world. Yet employers consistently report difficulty finding workers with the right skills.</p>
+          <p>At the same time, AI, automation, and digital technologies are reshaping industries and creating entirely new fields. But many institutions designed to prepare people for work were built for a different era.</p>
+          <p>The result is a widening gap between what institutions teach and what the modern economy demands. <strong>IDEAL Africa exists to close that gap</strong> — building environments where young Africans develop the thinking, skills, and networks to thrive.</p>
+        </div>
+      </div>
+      <div class="why-now__cards">
+        <div class="fact-card reveal reveal-d1">
+          <div class="fact-num">375M+</div>
+          <div class="fact-text">New African workforce entrants by 2030 — the world's largest emerging talent pipeline</div>
+        </div>
+        <div class="fact-card reveal reveal-d2">
+          <div class="fact-num">85M</div>
+          <div class="fact-text">Jobs may go unfilled globally by 2030 due to skills shortages — the opportunity is enormous</div>
+        </div>
+        <div class="fact-card fact-card--dark reveal reveal-d3">
+          <div class="fact-num">100,000</div>
+          <div class="fact-text">Young Africans IDEAL aims to train and mentor over the next decade</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="programs" id="programs">
+  <div class="container">
+    <div class="programs__header">
+      <div>
+        <span class="section-label">What We Do</span>
+        <h2 class="section-title reveal">How IDEAL Creates <em>Real Value</em></h2>
+      </div>
+      <p class="section-subtitle reveal reveal-d1">Practical skills, clear thinking, real-world application — not theory.</p>
+    </div>
+    <div class="programs__grid">
+      <div class="prog-card reveal reveal-d1">
+        <div class="prog-card__icon"><i class="bi bi-camera-video"></i></div>
+        <h3 class="prog-card__title">Webinars & Learning Sessions</h3>
+        <p class="prog-card__text">Conversations with professionals actively building across industries — career strategy, emerging technologies, leadership, and the future of work. Practical, not theoretical.</p>
+      </div>
+      <div class="prog-card reveal reveal-d2">
+        <div class="prog-card__icon"><i class="bi bi-people"></i></div>
+        <h3 class="prog-card__title">Community & Mentorship</h3>
+        <p class="prog-card__text">Peer learning, accountability check-ins, and guidance from experienced professionals who care about your growth. A network of curious, ambitious individuals.</p>
+      </div>
+      <div class="prog-card reveal reveal-d3">
+        <div class="prog-card__icon"><i class="bi bi-journals"></i></div>
+        <h3 class="prog-card__title">Learning Resources</h3>
+        <p class="prog-card__text">Curated notes, recordings, and insights from every session — not content overload, just the most valuable takeaways to keep you growing beyond events.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="audience" id="for-who">
+  <div class="container">
+    <div class="audience__inner">
+      <div class="reveal">
+        <span class="section-label">Who IDEAL Is For</span>
+        <h2 class="audience__title">Built for Those<br><em>Serious About Growth</em></h2>
+        <p class="audience__sub">IDEAL Africa is designed for young Africans aged 16–25 who take their futures seriously — regardless of where they currently are in their journey.</p>
+        <div class="audience__tags">
+          <span class="audience__tag">University Students</span>
+          <span class="audience__tag">Early-Career Professionals</span>
+          <span class="audience__tag">Builders & Operators</span>
+          <span class="audience__tag">Curious Minds</span>
+          <span class="audience__tag">Future Leaders</span>
+          <span class="audience__tag">Young Innovators</span>
+        </div>
+      </div>
+      <div class="audience__values">
+        <div class="val-card reveal reveal-d1"><div class="val-card__icon"><i class="bi bi-award"></i></div><div class="val-card__title">Excellence</div><div class="val-card__text">Setting and maintaining world-class standards in everything we do</div></div>
+        <div class="val-card reveal reveal-d2"><div class="val-card__icon"><i class="bi bi-shield-check"></i></div><div class="val-card__title">Integrity</div><div class="val-card__text">Building trust through transparency and accountability</div></div>
+        <div class="val-card reveal reveal-d3"><div class="val-card__icon"><i class="bi bi-arrow-up-circle"></i></div><div class="val-card__title">Growth Mindset</div><div class="val-card__text">Continuous learning and adaptability as a way of life</div></div>
+        <div class="val-card reveal reveal-d4"><div class="val-card__icon"><i class="bi bi-diagram-3"></i></div><div class="val-card__title">Collaboration</div><div class="val-card__text">Partnering with institutions, mentors, and learners for shared impact</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="container">
+    <div class="manifesto__inner reveal">
+      <p class="manifesto__quote">"The future will not be built by institutions alone. It will be built by <em>curious minds, disciplined thinkers,</em> and ambitious builders."</p>
+      <p class="manifesto__body">Across Africa, millions of young people possess extraordinary potential. But potential alone is not enough. What transforms potential into impact are the environments that shape thinking, expand perspective, and cultivate excellence. IDEAL Africa exists to create such an environment.</p>
+      <div class="manifesto__pills">
+        <span class="manifesto__pill">Globally Competitive</span>
+        <span class="manifesto__pill">Intellectually Curious</span>
+        <span class="manifesto__pill">Technologically Fluent</span>
+        <span class="manifesto__pill">Impact-Driven</span>
+      </div>
+      <a href="#about" class="btn btn-navy">Read Our Full Story &nbsp;→</a>
+    </div>
+  </div>
+</section>
+
+<!-- WEBINARS -->
+<section class="webinars" id="webinars">
+  <div class="container">
+    <div class="webinars__header">
+      <div>
+        <span class="section-label">Webinars</span>
+        <h2 class="section-title reveal">Learn From People<br><em>Building</em> the Future</h2>
+      </div>
+      <a href="mailto:info@idealafrica.org" class="btn btn-ghost-gold reveal reveal-d1">View All Sessions →</a>
+    </div>
+    <div class="webinars__grid">
+      <div class="wbr-card reveal reveal-d1">
+        <div class="wbr-card__body">
+          <span class="wbr-card__tag">Career Strategy</span>
+          <h3 class="wbr-card__title">Optimising Your LinkedIn for Global Opportunities</h3>
+          <div class="wbr-card__meta">
+            <span><i class="bi bi-person"></i> IDEAL Mentors Panel</span>
+            <span><i class="bi bi-calendar3"></i> Coming Soon 2026</span>
+          </div>
+        </div>
+        <div class="wbr-card__footer">
+          <span class="wbr-status">Upcoming</span>
+          <a href="mailto:info@idealafrica.org?subject=Register%20for%20Webinar" class="wbr-link">Register <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="wbr-card reveal reveal-d2">
+        <div class="wbr-card__body">
+          <span class="wbr-card__tag">Technology</span>
+          <h3 class="wbr-card__title">Building AI Agents & Automation Systems for African Problems</h3>
+          <div class="wbr-card__meta">
+            <span><i class="bi bi-person"></i> Tech Industry Speaker</span>
+            <span><i class="bi bi-calendar3"></i> Coming Soon 2026</span>
+          </div>
+        </div>
+        <div class="wbr-card__footer">
+          <span class="wbr-status">Upcoming</span>
+          <a href="mailto:info@idealafrica.org?subject=Register%20for%20Webinar" class="wbr-link">Register <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="wbr-card reveal reveal-d3">
+        <div class="wbr-card__body">
+          <span class="wbr-card__tag">Future of Work</span>
+          <h3 class="wbr-card__title">Career Strategy in Emerging Technology Fields</h3>
+          <div class="wbr-card__meta">
+            <span><i class="bi bi-person"></i> Industry Professional</span>
+            <span><i class="bi bi-calendar3"></i> Coming Soon 2026</span>
+          </div>
+        </div>
+        <div class="wbr-card__footer">
+          <span class="wbr-status">Upcoming</span>
+          <a href="mailto:info@idealafrica.org?subject=Register%20for%20Webinar" class="wbr-link">Register <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community" id="community">
+  <div class="container">
+    <div class="community__inner">
+      <div class="reveal">
+        <span class="section-label">The Community</span>
+        <h2 class="section-title">Growth Rarely Happens <em>in Isolation</em></h2>
+        <p class="section-subtitle" style="margin-top:1rem;">IDEAL is not a one-time course or short bootcamp. It is a long-term learning community where members continue to grow, share insights, and support one another.</p>
+        <div class="community__benefits">
+          <div class="benefit"><div class="benefit__icon"><i class="bi bi-camera-video-fill"></i></div><div><div class="benefit__title">Learning Sessions & Webinars</div><div class="benefit__text">Monthly and bi-weekly structured learning on skills that matter in the modern economy.</div></div></div>
+          <div class="benefit"><div class="benefit__icon"><i class="bi bi-people-fill"></i></div><div><div class="benefit__title">Peer Network & Mentors</div><div class="benefit__text">Connect with ambitious young Africans and experienced professionals who've walked the path.</div></div></div>
+          <div class="benefit"><div class="benefit__icon"><i class="bi bi-journal-bookmark-fill"></i></div><div><div class="benefit__title">Learning Resources</div><div class="benefit__text">Recordings, notes, and curated insights to keep learning beyond individual events.</div></div></div>
+          <div class="benefit"><div class="benefit__icon"><i class="bi bi-check2-circle"></i></div><div><div class="benefit__title">Accountability Check-ins</div><div class="benefit__text">Regular touchpoints and peer circles to keep you on track and committed to your goals.</div></div></div>
+        </div>
+      </div>
+      <div class="cta-block reveal reveal-d2">
+        <h3>IDEAL is not for passive consumption.<br>It's for people <em>ready to grow.</em></h3>
+        <p>Join a community of curious, ambitious individuals committed to becoming better thinkers, builders, and professionals. We learn in public and grow in private.</p>
+        <a href="mailto:info@idealafrica.org?subject=Join%20IDEAL%20Africa%20Community" class="btn btn-primary">Join the Community &nbsp;→</a>
+        <p class="cta-block__note">Community currently on WhatsApp. Expanding to a dedicated platform in 2026.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GET INVOLVED -->
+<section class="involved" id="get-involved">
+  <div class="container">
+    <span class="section-label reveal">Get Involved</span>
+    <h2 class="section-title reveal">Multiple Ways to <em>Contribute</em></h2>
+    <div class="involved__grid">
+      <div class="inv-card reveal reveal-d1">
+        <div class="inv-card__icon"><i class="bi bi-person-plus"></i></div>
+        <div>
+          <h3 class="inv-card__title">Join as a Member</h3>
+          <p class="inv-card__text">Become part of a network of ambitious young Africans committed to excellence and long-term growth.</p>
+          <a href="mailto:info@idealafrica.org?subject=Join%20IDEAL%20Africa" class="inv-card__link">Apply Now <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="inv-card reveal reveal-d2">
+        <div class="inv-card__icon"><i class="bi bi-hand-thumbs-up"></i></div>
+        <div>
+          <h3 class="inv-card__title">Volunteer Your Skills</h3>
+          <p class="inv-card__text">Share your expertise in research, communication, or community building and help shape the next generation of African talent.</p>
+          <a href="mailto:info@idealafrica.org?subject=Volunteer%20with%20IDEAL" class="inv-card__link">Get Started <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="inv-card reveal reveal-d3">
+        <div class="inv-card__icon"><i class="bi bi-mic"></i></div>
+        <div>
+          <h3 class="inv-card__title">Recommend a Speaker</h3>
+          <p class="inv-card__text">Know someone doing exceptional work? Help us bring the best builders and professionals into the IDEAL conversation.</p>
+          <a href="mailto:info@idealafrica.org?subject=Speaker%20Recommendation" class="inv-card__link">Recommend <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="inv-card reveal reveal-d4">
+        <div class="inv-card__icon"><i class="bi bi-building"></i></div>
+        <div>
+          <h3 class="inv-card__title">Partner with IDEAL</h3>
+          <p class="inv-card__text">Organizations committed to youth development, education, and African workforce growth — we'd love to collaborate.</p>
+          <a href="mailto:info@idealafrica.org?subject=Partnership%20Inquiry" class="inv-card__link">Start a Conversation <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta__inner reveal">
+      <span class="section-label">The Time Is Now</span>
+      <h2 class="final-cta__title">Join a Generation<br>Building Africa's <em>Future</em></h2>
+      <p class="final-cta__text">IDEAL is still early in its journey — but the ambition is clear. We are building a platform where young Africans access mentorship from world-class professionals, engage with transformative ideas, and develop capabilities to build globally competitive careers.</p>
+      <div class="final-cta__actions">
+        <a href="mailto:info@idealafrica.org?subject=Join%20IDEAL%20Africa" class="btn btn-primary">Join the Community &nbsp;→</a>
+        <a href="mailto:info@idealafrica.org?subject=Partnership" class="btn btn-outline">Partner with Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="img/IDEAL_Logo-removebg-preview.png" alt="IDEAL Africa" class="footer__logo" />
+        <p>Building environments where ambitious young Africans can think, learn, and build. Join the conversation. Keep learning.</p>
+        <div class="footer__social">
+          <a href="#" class="footer__soc" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" class="footer__soc" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="footer__soc" aria-label="X/Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="footer__soc" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer__head">Navigation</h4>
+        <div class="footer__links">
+          <a href="#about">About IDEAL</a>
+          <a href="#programs">Programs</a>
+          <a href="#webinars">Webinars</a>
+          <a href="#community">Community</a>
+          <a href="#get-involved">Get Involved</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer__head">Contact</h4>
+        <div class="footer__links">
+          <a href="mailto:info@idealafrica.org">info@idealafrica.org</a>
+          <a href="mailto:info@idealafrica.org?subject=Join%20IDEAL">Join as a Member</a>
+          <a href="mailto:info@idealafrica.org?subject=Volunteer">Volunteer</a>
+          <a href="mailto:info@idealafrica.org?subject=Partnership">Partner with Us</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer__head">Stay Updated</h4>
+        <p style="font-size:0.83rem;color:rgba(255,255,255,0.45);margin-bottom:0.75rem;">Get notified about upcoming webinars and community news.</p>
+        <div class="footer__nl">
+          <input type="email" placeholder="Your email" class="footer__nl-input" id="nlInput" />
+          <button class="footer__nl-btn" id="nlBtn">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 IDEAL Africa Foundation. All rights reserved.</span>
+      <span>Early stage NGO — incorporation in progress.</span>
+      <span>Built for young Africans, globally.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // Mobile nav
+  document.getElementById('navToggle').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
+  document.getElementById('mobileClose').addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open'));
+  document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Newsletter
+  document.getElementById('nlBtn').addEventListener('click', () => {
+    const inp = document.getElementById('nlInput');
+    if (inp.value && inp.value.includes('@')) {
+      document.getElementById('nlBtn').textContent = '✓';
+      document.getElementById('nlBtn').style.background = '#059669';
+      inp.value = ''; inp.placeholder = "Thanks! We'll be in touch.";
+      setTimeout(() => { document.getElementById('nlBtn').textContent = '→'; document.getElementById('nlBtn').style.background = ''; inp.placeholder = 'Your email'; }, 3000);
+    }
+  });
+</script>
+
+</body>
+</html>
